@@ -1,0 +1,4 @@
+﻿{
+  "name": "Common",
+  "references":[ "GUID:0e812f6df8934081ab9a77ee01ce6770", "GUID:e1a17c198d2fe134fa68c3c1e118da5c", "GUID:60642e13d2de498d9e7b043a5f06d19d", "GUID:b3e177aca4244fc1ab83ecc036b39a36", "GUID:2ac9edae3c354fe18e878790300b2ea7", "GUID:a40c31d6f5fba124888a7fe2f6c7a016" ]
+}

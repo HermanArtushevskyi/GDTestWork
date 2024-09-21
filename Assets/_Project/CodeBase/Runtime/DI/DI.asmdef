@@ -1,0 +1,29 @@
+{
+    "name": "DI",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
+        "GUID:fd7a7175ab1f47288d30c7b7f3936172",
+        "GUID:3a791ee6825448e8939a5ed722be2312",
+        "GUID:bc9741faffba4306a09755b53cad7eb9",
+        "GUID:df2188aa8b004ef2959fa8c21f12d887",
+        "GUID:b18ad214be238b84db3211520d02c103",
+        "GUID:a40c31d6f5fba124888a7fe2f6c7a016",
+        "GUID:e1a17c198d2fe134fa68c3c1e118da5c",
+        "GUID:60642e13d2de498d9e7b043a5f06d19d",
+        "GUID:2ac9edae3c354fe18e878790300b2ea7",
+        "GUID:b3e177aca4244fc1ab83ecc036b39a36",
+        "GUID:0e812f6df8934081ab9a77ee01ce6770",
+        "GUID:f8ca5e64ff45414eb841fcb62a6ebfbd",
+        "GUID:0c96ffd3d5474fb9a824c520ce0c28aa"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

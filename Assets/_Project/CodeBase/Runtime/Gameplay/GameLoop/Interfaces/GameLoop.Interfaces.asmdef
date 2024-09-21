@@ -1,0 +1,19 @@
+{
+    "name": "GameLoop.Interfaces",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0e812f6df8934081ab9a77ee01ce6770",
+        "GUID:60642e13d2de498d9e7b043a5f06d19d",
+        "GUID:b3e177aca4244fc1ab83ecc036b39a36",
+        "GUID:2ac9edae3c354fe18e878790300b2ea7"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
