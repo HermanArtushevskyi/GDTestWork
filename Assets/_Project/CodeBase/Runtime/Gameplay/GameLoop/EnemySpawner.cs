@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using _Project.CodeBase.Runtime.Factories.Interfaces;
 using _Project.CodeBase.Runtime.Gameplay.Character.Interfaces;
 using _Project.CodeBase.Runtime.Gameplay.Enemies;
+using _Project.CodeBase.Runtime.Gameplay.Enemies.Common;
 using _Project.CodeBase.Runtime.Gameplay.Enemies.Interfaces;
+using _Project.CodeBase.Runtime.Gameplay.Entities.Interfaces;
 using _Project.CodeBase.Runtime.Gameplay.GameLoop.Interfaces;
 using Level;
 using UnityEngine;
@@ -16,10 +18,11 @@ namespace _Project.CodeBase.Runtime.Gameplay.GameLoop
         public List<IEnemy> AliveEnemies { get; }
         public event Action<int> OnEnemiesCountChanged;
         
-        private readonly IFactory<Enemy, IPlayer, Vector3, ScriptableEnemy> _enemyFactory;
+        private readonly IFactory<Enemy, IPlayer, Vector3, ScriptableEnemy, IEnemySpawner> _enemyFactory;
+        private IPlayer _player;
 
         public EnemySpawner(
-            IFactory<Enemy, IPlayer, Vector3, ScriptableEnemy> enemyFactory)
+            IFactory<Enemy, IPlayer, Vector3, ScriptableEnemy, IEnemySpawner> enemyFactory)
         {
             _enemyFactory = enemyFactory;
             AliveEnemies = new List<IEnemy>();
@@ -27,23 +30,35 @@ namespace _Project.CodeBase.Runtime.Gameplay.GameLoop
         
         public void Spawn(IPlayer player, Wave wave)
         {
+            _player = player;
             foreach (ScriptableEnemy enemy in wave.Characters)
             {
-                SpawnEnemy(player, enemy);
+                Spawn(enemy, Vector3.zero);
             }
         }
 
-        private void SpawnEnemy(IPlayer player, ScriptableEnemy enemy)
+        public void Spawn(ScriptableEnemy enemy, Vector3 position, bool randomPos = true)
         {
-            Vector3 position = new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
-            Enemy spawned = _enemyFactory.Create(player, position, enemy);
+            if (randomPos)
+            {
+                SpawnEnemy(_player, enemy, new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10)));
+                return;
+            }
+            
+            SpawnEnemy(_player, enemy, position);
+        }
+
+        private void SpawnEnemy(IPlayer player, ScriptableEnemy enemy, Vector3 position)
+        {
+            IEnemy spawned = _enemyFactory.Create(player, position, enemy, this);
             AliveEnemies.Add(spawned);
             spawned.OnDeath += OnEnemyDeath;
         }
 
-        private void OnEnemyDeath(Enemy obj)
+        private void OnEnemyDeath(IHasHealth obj)
         {
-            AliveEnemies.Remove(obj);
+            IEnemy enemy = (IEnemy) obj;
+            AliveEnemies.Remove(enemy);
             OnEnemiesCountChanged?.Invoke(AliveEnemies.Count);
         }
     }

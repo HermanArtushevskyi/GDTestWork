@@ -4,9 +4,10 @@ using _Project.CodeBase.Runtime.Gameplay.Character.Interfaces;
 using _Project.CodeBase.Runtime.Gameplay.Enemies.Interfaces;
 using _Project.CodeBase.Runtime.Gameplay.Entities.Interfaces;
 using _Project.CodeBase.Runtime.Gameplay.GameLoop.Interfaces;
+using _Project.CodeBase.Runtime.Services.InputService.Common;
+using _Project.CodeBase.Runtime.Services.InputService.Interfaces;
 using _Project.CodeBase.Runtime.UnityContext.Interfaces;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace _Project.CodeBase.Runtime.Gameplay.Character
 {
@@ -15,25 +16,34 @@ namespace _Project.CodeBase.Runtime.Gameplay.Character
         public PlayerStats Stats { get; private set; }
         public GameObject PlayerGameObject => _playerGameObject;
         public float HP { get => Stats.HP; }
+        public bool CanAttack => Time.time - _lastAttackTime > Stats.AttackSpeed;
+        public bool CanSuperAttack => Time.time - _lastSuperAttackTime > Stats.SuperAttackSpeed;
+        public event Action<IHasHealth> OnDeath;
 
         private float _lastAttackTime;
+        private float _lastSuperAttackTime;
         private bool _isDead;
         
         private readonly GameObject _playerGameObject;
         private readonly IEnemySpawner _enemySpawner;
-        private Animator _animator;
-        private IUpdate _update;
+        private readonly IInputSource _inputSource;
+        private readonly Animator _animator;
+        private readonly Rigidbody _rb;
+        private readonly IUpdate _update;
 
 
         public Player(PlayerStats stats, IUpdate update, Animator animator, GameObject playerGameObject,
-            IEnemySpawner enemySpawner)
+            IEnemySpawner enemySpawner, IInputSource inputSource)
         {
             Stats = stats.Clone();
             _update = update;
             _animator = animator;
             _playerGameObject = playerGameObject;
             _enemySpawner = enemySpawner;
+            _inputSource = inputSource;
             _update.OnUpdate += OnUpdate;
+            _rb = playerGameObject.GetComponent<Rigidbody>();
+            _enemySpawner.OnEnemiesCountChanged += OnEnemiesCountChanged;
         }
 
         public void TakeDamage(float damage)
@@ -43,6 +53,55 @@ namespace _Project.CodeBase.Runtime.Gameplay.Character
             if (Stats.HP <= 0)
             {
                 Die();
+            }
+        }
+
+
+        public void Attack()
+        {
+            if (Time.time - _lastAttackTime < Stats.AttackSpeed)
+            {
+                return;
+            }
+            
+            _lastAttackTime = Time.time;
+            
+            _animator.SetTrigger("Attack");
+            
+            List<IEnemy> Enemies = _enemySpawner.AliveEnemies;
+            
+            foreach (IEnemy enemy in Enemies)
+            {
+                if (Vector3.Distance(_playerGameObject.transform.position, enemy.EnemyGameObject.transform.position) < Stats.AttackRange)
+                {
+                    enemy.TakeDamage(Stats.Damage);
+                    _playerGameObject.transform.LookAt(enemy.EnemyGameObject.transform.position);
+                    return;
+                }
+            }
+        }
+
+        public void SuperAttack()
+        {
+            if (Time.time - _lastSuperAttackTime < Stats.SuperAttackSpeed)
+            {
+                return;
+            }
+            
+            _lastSuperAttackTime = Time.time;
+            
+            _animator.SetTrigger("SwordDoubleAttack");
+            
+            List<IEnemy> Enemies = _enemySpawner.AliveEnemies;
+            
+            foreach (IEnemy enemy in Enemies)
+            {
+                if (Vector3.Distance(_playerGameObject.transform.position, enemy.EnemyGameObject.transform.position) < Stats.AttackRange)
+                {
+                    enemy.TakeDamage(Stats.Damage * 2);
+                    _playerGameObject.transform.LookAt(enemy.EnemyGameObject.transform.position);
+                    return;
+                }
             }
         }
 
@@ -58,60 +117,29 @@ namespace _Project.CodeBase.Runtime.Gameplay.Character
             {
                 return;
             }
+            
+            Move();
+        }
 
-            List<IEnemy> enemies =_enemySpawner.AliveEnemies;
-            IEnemy closestEnemie = null;
-
-            for (int i = 0; i < enemies.Count; i++)
-            {
-                var enemie = enemies[i];
-                if (enemie == null)
-                {
-                    continue;
-                }
-
-                if (closestEnemie == null)
-                {
-                    closestEnemie = enemie;
-                    continue;
-                }
-
-                var distance = Vector3.Distance(_playerGameObject.transform.position, enemie.EnemyGameObject.transform.position);
-                var closestDistance =
-                    Vector3.Distance(_playerGameObject.transform.position, closestEnemie.EnemyGameObject.transform.position);
-
-                if (distance < closestDistance)
-                {
-                    closestEnemie = enemie;
-                }
-            }
-
-            if (closestEnemie != null)
-            {
-                var distance = Vector3.Distance(_playerGameObject.transform.position, closestEnemie.EnemyGameObject.transform.position);
-                if (distance <= Stats.AttackRange)
-                {
-                    if (Time.time - _lastAttackTime > Stats.AttackRange)
-                    {
-                        //transform.LookAt(closestEnemie.transform);
-                        _playerGameObject.transform.rotation =
-                            Quaternion.LookRotation(closestEnemie.EnemyGameObject.transform.position -
-                                                    _playerGameObject.transform.position);
-
-                        _lastAttackTime = Time.time;
-                        closestEnemie.TakeDamage(Stats.Damage);
-                        _animator.SetTrigger("Attack");
-                    }
-                }
-            }
+        private void Move()
+        {
+            RawInput input = _inputSource.GetInput();
+            Vector3 moveVector = new Vector3(input.Movement.x, 0, input.Movement.y) * Stats.MoveSpeed;
+            _rb.AddForce(moveVector);
+            _playerGameObject.transform.LookAt(_playerGameObject.transform.position + moveVector);
+            _animator.SetFloat("Speed", moveVector.magnitude);
         }
 
         private void Die()
         {
             _isDead = true;
             _animator.SetTrigger("Die");
+            OnDeath?.Invoke(this);
+        }
 
-            SceneManager.Instance.GameOver();
+        private void OnEnemiesCountChanged(int obj)
+        {
+            Stats.HP++;
         }
     }
 }

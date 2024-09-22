@@ -1,0 +1,16 @@
+{
+    "name": "InputService.Interfaces",
+    "rootNamespace": "",
+    "references": [
+        "GUID:adb1132bf9bb41be97650efb5ec8b2fe"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

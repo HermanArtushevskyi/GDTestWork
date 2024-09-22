@@ -1,0 +1,16 @@
+{
+    "name": "UI.Elements",
+    "rootNamespace": "",
+    "references": [
+        "GUID:bc9741faffba4306a09755b53cad7eb9"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 namespace _Project.CodeBase.Runtime.Gameplay.Character
 {
@@ -9,25 +8,23 @@ namespace _Project.CodeBase.Runtime.Gameplay.Character
         public float HP;
         public float Damage;
         public float AttackSpeed;
+        public float SuperAttackSpeed;
         public float AttackRange;
+        public float MoveSpeed;
         
-        public PlayerStats(float hp, float damage, float attackSpeed, float attackRange)
+        public PlayerStats(float hp, float damage, float attackSpeed, float superAttackSpeed, float attackRange, float moveSpeed)
         {
             HP = hp;
             Damage = damage;
             AttackSpeed = attackSpeed;
+            SuperAttackSpeed = superAttackSpeed;
             AttackRange = attackRange;
+            MoveSpeed = moveSpeed;
         }
         
         public PlayerStats Clone()
         {
-            return new PlayerStats(HP, Damage, AttackSpeed, AttackRange);
+            return new PlayerStats(HP, Damage, AttackSpeed, SuperAttackSpeed, AttackRange, MoveSpeed);
         }
-    }
-
-    [CreateAssetMenu(fileName = "PlayerStats", menuName = "Game/PlayerStats", order = 0)]
-    public class ScriptablePlayerStats : ScriptableObject
-    {
-        public PlayerStats Stats;
     }
 }

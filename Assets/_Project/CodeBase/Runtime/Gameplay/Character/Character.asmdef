@@ -1,4 +1,4 @@
 {
 	"name": "Character",
-	"references":[ "GUID:bc9741faffba4306a09755b53cad7eb9", "GUID:a40c31d6f5fba124888a7fe2f6c7a016", "GUID:a284e4202d794250b0b670a2ea95a402", "GUID:b3e177aca4244fc1ab83ecc036b39a36", "GUID:2ac9edae3c354fe18e878790300b2ea7", "GUID:60642e13d2de498d9e7b043a5f06d19d", "GUID:0d8beb7f090555447a6cf5ce9e54dbb4", "GUID:f8ca5e64ff45414eb841fcb62a6ebfbd" ]
+	"references":[ "GUID:bc9741faffba4306a09755b53cad7eb9", "GUID:a40c31d6f5fba124888a7fe2f6c7a016", "GUID:a284e4202d794250b0b670a2ea95a402", "GUID:b3e177aca4244fc1ab83ecc036b39a36", "GUID:2ac9edae3c354fe18e878790300b2ea7", "GUID:60642e13d2de498d9e7b043a5f06d19d", "GUID:0d8beb7f090555447a6cf5ce9e54dbb4", "GUID:f8ca5e64ff45414eb841fcb62a6ebfbd", "GUID:355cae2fa3824aa7965b8afbdfa08b9a", "GUID:adb1132bf9bb41be97650efb5ec8b2fe" ]
 }

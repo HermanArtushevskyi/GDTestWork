@@ -6,5 +6,10 @@ namespace _Project.CodeBase.Runtime.Gameplay.Character.Interfaces
     public interface IPlayer : IHasHealth
     {
         public GameObject PlayerGameObject { get; }
+        public bool CanAttack { get; }
+        public bool CanSuperAttack { get; }
+        
+        public void Attack();
+        public void SuperAttack();
     }
 }

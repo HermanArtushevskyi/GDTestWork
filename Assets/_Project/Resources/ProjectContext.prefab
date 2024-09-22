@@ -75,6 +75,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unityContextPrefab: {fileID: 4044012997896952634, guid: b0d909b1d092fe440b47ec5fe8eb9cc8, type: 3}
-  _playerStats: {fileID: 11400000, guid: 235e3af5d5d642248a784cfb1cfd2800, type: 2}
+  _playerStats: {fileID: 11400000, guid: 61fb6b9064ec31b459d1642084e65eda, type: 2}
   _playerPrefab: {fileID: 5016100408427286232, guid: 98fa2bf115616174da3132f7a380aca3, type: 3}
   _levelConfig: {fileID: 11400000, guid: 8153ea4e5491d8543b373d0f03962714, type: 2}
